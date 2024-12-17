@@ -1,5 +1,15 @@
-const app = require("express")();
+const http = require("http");
+const express = require("express");
+const { Socket: socketServer } = require("socket.io");
 
-app.get("/", (req, res) => res.send("hi there"));
-app.listen(8000, () => console.log(`server started`));
- 
+const app = express();
+const server = http.createServer(app);
+const io = new socketServer({
+  cors: "*",
+});
+
+io.attach(server);
+
+io.on("connection", (socket) => console.log("socket connected", socket.id));
+
+server.listen(8000, `socket server connected at port 8000`);
